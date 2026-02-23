@@ -1,0 +1,132 @@
+:root{
+    --background-start: #0f172a;  
+    --background-end: #1e293b;   
+    --main-heading: #1E3A8A;
+    --card-bg:#FFFFFF;
+    --card-shadow:rgba(0,0,0,0.08);
+    --border:#DEE2E6;
+    --success:
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.hero{
+    height: 50vh;
+    width: 100%;
+    background-image:url(/static/images/hero.png);
+    position: relative;
+}
+.navbar{
+    width: 50%;
+    height: 10vh;
+    position: absolute;
+    top: 30px;
+    left: 25%;
+    border-radius: 40px;
+    border: 1px solid var(--border);
+    background-color: #2c5177;
+    box-shadow: 1px 0px 5px rgb(202, 196, 196);
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content:center;
+}
+.logo{
+    background-image: url(/static/images/logo.png);
+    background-size: cover; 
+    background-position: center;
+    width:  70px;
+    height: 55px;
+    border-radius: 50px;
+}
+.title{
+    width:  auto;
+    padding: 5px;
+    border-radius: 50px;
+    font-size: xx-large;
+    color: white;
+}
+.main {
+    background: linear-gradient(
+        to bottom,
+        var(--background-start),
+        var(--background-end)
+    );
+    min-height: auto;
+    width: 100%;
+
+   
+}
+.boxes{
+    margin: auto;
+    height: auto;
+    display: flex;
+    gap: 90px;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+   
+}
+.box{
+    width: 22%;
+    height: 30vh;
+    background-color: var(--card-bg);
+    box-shadow:1px 1px 4px 5px var(--card-shadow);
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+.icon1{
+      background-image: url(/static/images/user\ \(1\).png);
+      width: 70px;
+      height: 70px;
+      background-size: cover; 
+      background-position: center;
+}
+.icon2{
+      background-image: url(/static/images/enterprise\ \(1\).png);
+      width: 70px;
+      height: 70px;
+      background-size: cover; 
+      background-position: center;
+}
+.icon3{
+      background-image: url(/static/images/education.png );
+      width: 70px;
+      height: 70px;
+      background-size: cover; 
+      background-position: center;
+}
+h2{
+    text-align: center;
+    text-transform: capitalize;
+    margin-top: 10px;
+}
+.action-button{
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+.action{
+    background-color: #1E3A8A;
+    padding: 10px 20px;
+    margin-top: 5px;
+    border-radius: 10px;
+    color: #FFFFFF;
+    text-transform: capitalize;
+}
+.action:hover{
+    cursor: pointer;
+    background-color:#172554 ;
+}
+

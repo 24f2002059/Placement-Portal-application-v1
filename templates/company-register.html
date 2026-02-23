@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>company-register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/company.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .page {
+            background-image: url("{{ url_for('static', filename='images/company-login-banner.jpeg') }}");
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <div class="black-cover">
+            <div class="form-box">
+                <h2 class="text-center">Company Register</h2>
+                <form action="/company-register" method="POST">
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="Name" class="form-label">Company Name</label>
+                            <input type="text" class="form-control" id="Name" name="name">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="hr_contact" class="form-label">HR Contact</label>
+                            <input type="text" class="form-control" id="hr_contact" name="hr_contact">
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="website_link" class="form-label">Website Link</label>
+                            <input type="text" class="form-control" id="website_link" name="website_link">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="field" class="form-label">Field</label>
+                            <input type="text" class="form-control" id="field" name="field">
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Company Email</label>
+                            <input type="email" class="form-control" id="email" name="email">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="Password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="Password" name="password">
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <input type="submit" class="btn btn-primary" value="Register">
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

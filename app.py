@@ -17,7 +17,7 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
         admin = User.query.filter_by(role = 'admin').first()
-        if admin :
+        if not admin :
             admin = User(email="iitmadmin123@gmail.com", password="admin@123", role="admin")
             db.session.add(admin)
             db.session.commit()

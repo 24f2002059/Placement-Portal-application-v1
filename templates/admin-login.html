@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin-login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="page">
+        <div class="form-box">
+            <h3 class="text-center mb-4 fw-bold">Admin Login</h3>
+            <form action="/admin-login" method="POST">
+
+                <div class="mb-3">
+                    <label for="adminEmail" class="form-label fw-semibold">Email</label>
+                    <input type="email" class="form-control" id="adminEmail" name="email" placeholder="Enter email"
+                        required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="Password" class="form-label fw-semibold">Password</label>
+                    <input type="password" class="form-control" id="Password" name="password"
+                        placeholder="Enter password" required>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">
+                        Login
+                    </button>
+                </div>
+                {% if error %}
+                    <div class="alert alert-danger text-center">{{ error }}</div>
+                {% endif %}
+
+            </form>
+
+
+        </div>
+    </div>
+
+
+</body>
+
+</html>

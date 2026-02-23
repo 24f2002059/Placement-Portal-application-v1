@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+
+<body>
+    <div class="dashboard-nav">
+        <div class="nav-left">
+            <img src="/static/images/home-logo.png" alt="home">
+            <span>Dashboard</span>
+        </div>
+    </div>
+
+    <div class="page-tabs">
+        <a href="#" class="active">Home</a>
+        <a href="#">Students</a>
+        <a href="#">Companies</a>
+        <a href="#">Placement Drive</a>
+        <a href="#">Applications</a>
+    </div>
+
+    <div class="dashboard-data">
+        <div class="box">
+            <h3>Total Students</h3>
+            <p>1500</p>
+        </div>
+        <div class="box">
+            <h3>Total Companies</h3>
+            <p>1500</p>
+        </div>
+        <div class="box">
+            <h3>Placement drives</h3>
+            <p>1500</p>
+        </div>
+        <div class="box">
+            <h3>Total Applications</h3>
+            <p>1500</p>
+        </div>
+    </div>
+
+    <div class="pending-data">
+        <div class="pending-drive">
+            <h3>Pending Placement Drives</h3>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Job Title</th>
+                        <th scope="col">Company</th>
+                        <th scope="col">Details</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Drive 1</td>
+                        <td>Google</td>
+                        <td><button class="btn btn-primary btn-sm">View</button></td>
+                        <td><button class="btn btn-success btn-sm">Approve</button>
+                            <button class="btn btn-danger btn-sm">Reject</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Drive 2</td>
+                        <td>Microsoft</td>
+                        <td><button class="btn btn-primary btn-sm">View</button></td>
+                        <td><button class="btn btn-success btn-sm">Approve</button>
+                            <button class="btn btn-danger btn-sm">Reject</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="pending-companies">
+            <h3>Pending Company Approvals</h3>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Company Name</th>
+                        <th scope="col">website link</th>
+                        <th scope="col">Details</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for company in unverified_company %}
+                    <tr>
+                        <th scope="row">{{ company.id }}</th>
+                        <td>{{ company.name }}</td>
+                        <td><a href="{{ company.website_link }}">{{ company.website_link }}</a></td>
+                        <td><button class="btn btn-primary btn-sm">View</button></td>
+                        <td>
+                            <a href="/company-verified/{{ company.id }}"  class="btn btn-success btn-sm">Approve</a>
+                            <a href="/company-rejected/{{ company.id }}" class="btn btn-danger btn-sm">Reject</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+
+</html>
