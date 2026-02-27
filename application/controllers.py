@@ -1,6 +1,7 @@
 from .model import *
 from flask import current_app as app
 from flask import Flask,render_template ,request , redirect , url_for
+from sqlalchemy import or_
 
 @app.route('/')
 def home():
@@ -25,7 +26,9 @@ def admin_dashboard():
     company = Company.query.all()
     unverified_company = Company.query.filter_by(status='unverified').all()
     student = Student.query.all()
-    return render_template("/admin/dashboard.html", company=company, student=student, unverified_company=unverified_company)
+    placement_drives = PlacementDrive.query.all()
+    applications = Applications.query.all()
+    return render_template("/admin/dashboard.html", company=company, student=student, unverified_company=unverified_company, placement_drives=placement_drives, applications=applications)
 
 
 @app.route('/company-verified/<int:company_id>')
@@ -43,6 +46,94 @@ def company_rejected(company_id):
         company.status = 'rejected'
         db.session.commit()
     return redirect("/admin-dashboard")
+
+@app.route('/admin-students')
+def admin_students():
+    students = Student.query.all()
+    return render_template("/admin/student.html", students=students)
+
+@app.route('/admin-student-details/<int:student_id>')
+def admin_student_details(student_id):
+    student = Student.query.get(student_id)
+    applications = Applications.query.filter_by(student_id=student_id).all()
+    return render_template("/admin/student-details.html", student=student, applications=applications)
+
+@app.route('/admin-deactivated-students/<int:student_id>')
+def admin_deactivated_students(student_id):
+    student = Student.query.get(student_id)
+    student.status = 'deactivated'
+    db.session.commit()
+    return redirect(f"/admin-student-details/{student_id}")
+
+@app.route('/search-students', methods=['GET'])
+def search_students():
+    search = request.args.get('search')
+
+    if search:
+        # Try to search by ID if search query is a number
+        if search.isdigit():
+            students = Student.query.filter(
+                or_(
+                    Student.name.ilike(f"%{search}%"),
+                    Student.id == int(search),
+                    Student.phone.ilike(f"%{search}%")
+                )
+            ).all()
+        else:
+            students = Student.query.filter(
+                or_(
+                    Student.name.ilike(f"%{search}%"),
+                    Student.phone.ilike(f"%{search}%")
+                )
+            ).all()
+    else:
+        students = Student.query.all()
+
+    return render_template("/admin/student.html", students=students)
+
+@app.route('/admin-companies')
+def admin_companies():
+    companies = Company.query.all()
+    return render_template("/admin/company.html", companies=companies)
+
+@app.route('/admin-company-details/<int:company_id>')
+def admin_company_details(company_id):  
+    company = Company.query.get(company_id)
+    placement_drives = PlacementDrive.query.filter_by(company_id=company_id).all()
+    return render_template("/admin/company-details.html", company=company, placement_drives=placement_drives)
+
+@app.route('/admin-deactivated-companies/<int:company_id>')
+def admin_deactivated_companies(company_id):   
+    company = Company.query.get(company_id)
+    company.status = 'deactivated'
+    db.session.commit()
+    return redirect(f"/admin-company-details/{company_id}") 
+
+@app.route('/search-companies', methods=['GET'])
+def search_companies():
+    search = request.args.get('search')
+
+    if search:
+        companies = Company.query.filter(
+            or_(
+                Company.name.ilike(f"%{search}%"),
+                Company.field.ilike(f"%{search}%")
+            )
+        ).all()
+    else:
+        companies = Company.query.all()
+
+    return render_template("/admin/company.html", companies=companies)
+
+@app.route('/admin-placement-drives')
+def admin_placement_drives():
+    placement_drives = PlacementDrive.query.all()
+    return render_template("/admin/placement-drive.html", placement_drives=placement_drives)
+
+@app.route('/admin-applications')
+def admin_applications():
+    applications = Applications.query.all()
+    return render_template("/admin/application.html", applications=applications)
 
 # ----student backend ---- 
 

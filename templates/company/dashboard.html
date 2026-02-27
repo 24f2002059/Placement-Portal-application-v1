@@ -8,8 +8,10 @@
 <body>
     {% if company.status == 'verified' %}
         <h1>Welcome to the Company Dashboard, Company ID: {{ company.id }}</h1>
+    {% elif company.status == 'deactivated' %}
+        <h1>Your company has been deactivated.</h1>
     {% else %}
-        <h1>you are under verification please wait for approval..!</h1>
+        <h1>Your company is pending verification. Please wait for admin approval.</h1>
     {% endif %}
 </body>
 </html>

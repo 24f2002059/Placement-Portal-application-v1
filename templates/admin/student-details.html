@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+
+<body>
+    <div class="dashboard-nav">
+        <div class="nav-left">
+            <img src="/static/images/home-logo.png" alt="home">
+            <span>Dashboard</span>
+        </div>
+    </div>
+
+    <div class="page-tabs">
+        <a href="/admin-dashboard">Home</a>
+        <a href="/admin-students">Students</a>
+        <a href="/admin-companies">Companies</a>
+        <a href="/admin-placement-drives">Placement Drive</a>
+        <a href="/admin-applications">Applications</a>
+    </div>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <h2>Student Details</h2>
+        </div>
+    </nav>
+
+    <div class="information">
+        <div class="profile-logo">
+
+            <img src="https://ui-avatars.com/api/?name={{ student.name }} &amp;background=4e6fbf&amp;color=ffffff"
+                alt="Avatar" class="symbol rounded-circle symbol-logo" />
+            <div class="actions">
+                <a href="/admin-deactivated-students/{{ student.id }}" class="btn btn-danger">Deactivate</a>
+            </div>
+        </div>
+        <div class="profile-info">
+            <p>Name :- {{ student.name }}</p>
+            <p>Email :- {{ student.user.email }}</p>
+            <p>Phone :- {{ student.phone }}</p>
+            <p>Academic level :- {{ student.academic_level }}</p>
+            <p>github link :- <a href="{{ student.github_link }}" target="_blank">{{ student.github_link }}</a></p>
+        </div>
+    </div>
+    <div class="student-history">
+        <h2>Application history</h2>
+        <div class="history-table">
+            {% if applications %}
+            {% for application in applications %}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">application id</th>
+                        <th scope="col">drive name</th>
+                        <th scope="col">company</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Status</th>
+                       
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">{{ application.id }}</th>
+                        <td>{{ application.placementdrive.name }}</td>
+                        <td>{{ application.company.name }}</td>
+                        <td>{{ application.application_date }}</td>
+                        <td class="badge rounded-pill text-bg-info">{{ application.status }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            {% endfor %}
+            {% else %}
+            <p class="text-center text-muted">No applications found for this student.</p>
+            {% endif %}
+
+        </div>
+
+    </div>
+</body>
+
+</html>

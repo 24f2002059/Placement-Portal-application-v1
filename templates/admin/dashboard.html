@@ -18,35 +18,36 @@
     </div>
 
     <div class="page-tabs">
-        <a href="#" class="active">Home</a>
-        <a href="#">Students</a>
-        <a href="#">Companies</a>
-        <a href="#">Placement Drive</a>
-        <a href="#">Applications</a>
+        <a href="/admin-dashboard" class="active">Home</a>
+        <a href="/admin-students">Students</a>
+        <a href="/admin-companies">Companies</a>
+        <a href="/admin-placement-drives">Placement Drive</a>
+        <a href="/admin-applications">Applications</a>
     </div>
 
     <div class="dashboard-data">
         <div class="box">
             <h3>Total Students</h3>
-            <p>1500</p>
+            <p>{{ student|length }}</p>
         </div>
         <div class="box">
             <h3>Total Companies</h3>
-            <p>1500</p>
+            <p>{{ company|length }}</p>
         </div>
         <div class="box">
             <h3>Placement drives</h3>
-            <p>1500</p>
+            <p>{{ placement_drives|length }}</p>
         </div>
         <div class="box">
             <h3>Total Applications</h3>
-            <p>1500</p>
+            <p>{{ applications|length }}</p>
         </div>
     </div>
 
     <div class="pending-data">
         <div class="pending-drive">
             <h3>Pending Placement Drives</h3>
+            {% if unverified_drives %}
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -58,29 +59,27 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for drive in unverified_drives %}
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Drive 1</td>
-                        <td>Google</td>
-                        <td><button class="btn btn-primary btn-sm">View</button></td>
-                        <td><button class="btn btn-success btn-sm">Approve</button>
-                            <button class="btn btn-danger btn-sm">Reject</button>
+                        <th scope="row">{{ drive.id }}</th>
+                        <td>{{ drive.job_title }}</td>
+                        <td>{{ drive.company.name }}</td>
+                        <td><a href="#" class="btn btn-primary btn-sm">View</a></td>
+                        <td>
+                            <a href="/admin-approve-placement-drive/{{ drive.id }}" class="btn btn-success btn-sm">Approve</a>
+                            <a href="/admin-reject-placement-drive/{{ drive.id }}" class="btn btn-danger btn-sm">Reject</a>
                         </td>
                     </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Drive 2</td>
-                        <td>Microsoft</td>
-                        <td><button class="btn btn-primary btn-sm">View</button></td>
-                        <td><button class="btn btn-success btn-sm">Approve</button>
-                            <button class="btn btn-danger btn-sm">Reject</button>
-                        </td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
+            {% else %}
+            <p>No pending placement drives.</p>
+            {% endif %}
         </div>
         <div class="pending-companies">
             <h3>Pending Company Approvals</h3>
+            {% if unverified_company %}
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -97,7 +96,7 @@
                         <th scope="row">{{ company.id }}</th>
                         <td>{{ company.name }}</td>
                         <td><a href="{{ company.website_link }}">{{ company.website_link }}</a></td>
-                        <td><button class="btn btn-primary btn-sm">View</button></td>
+                        <td><a href="/admin-company-details/{{ company.id }}" class="btn btn-primary btn-sm">View</a></td>
                         <td>
                             <a href="/company-verified/{{ company.id }}"  class="btn btn-success btn-sm">Approve</a>
                             <a href="/company-rejected/{{ company.id }}" class="btn btn-danger btn-sm">Reject</a>
@@ -106,6 +105,9 @@
                     {% endfor %}
                 </tbody>
             </table>
+            {% else %}
+            <p>No pending company approvals.</p>
+            {% endif %}
         </div>
     </div>
 

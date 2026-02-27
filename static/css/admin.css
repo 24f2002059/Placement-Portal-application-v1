@@ -102,7 +102,6 @@ body {
     text-decoration: none;
     color: var(--text-secondary);
     font-weight: 500;
-    /* position: relative; */
 }
 
 .page-tabs a:hover {
@@ -191,3 +190,117 @@ body {
     position: sticky;
     background-color: var(--card-white);
 }
+
+/* ---student css ----  */
+
+.student-info{
+    width: 100%;
+    min-height: 78vh;
+    background-color: var(--card-bg);
+}
+.student-profiles{
+    height: 70vh;
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0px 20px;
+    justify-content: center;
+
+}
+.profile{
+    background-color: var(--nav-bg);
+    width: 20%;
+    height: 30vh;
+    border-radius: 12px;
+    box-shadow: var(--shadow-soft);
+    color: var(--text-secondary);
+    padding: 10px;
+}
+.box1{
+    display: flex;
+    gap: 18px;
+}
+.symbol{
+    width: 90px;
+    height: 90px;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+}
+.box1 .div{
+    padding: 0;
+}
+.box2{
+    margin-top: 20px;
+    padding: 0px 5px;
+}
+.text-center{
+    margin-top: 17px;
+}
+.logos{
+    width: 50px;
+    height: 50px;
+}
+/* ----details css ----  */
+
+.information{
+    width: 100%;
+    height: auto;
+    background-color: var(--card-bg);
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 70px;
+    padding: 20px;
+}
+.profile-logo{
+    width: 150px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.symbol-logo{
+    width: 180px;
+    height: 180px;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+}
+.actions{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+.profile-info{
+    background-color: var(--card-white);
+    width: 40%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: var(--shadow-soft);
+    padding: 20px;
+}
+.profile-info p{
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    font-size: large;
+}
+.student-history{
+    background-color: var(--card-bg);
+    height: auto;
+    padding: 10px;
+}
+.history-table{
+    background-color: var(--card-white);
+    box-shadow: var(--shadow-soft);
+    width: 70%;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    min-height: 200px;
+    padding: 20px;
+}
+
+

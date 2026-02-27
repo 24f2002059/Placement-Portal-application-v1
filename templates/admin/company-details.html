@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+
+<body>
+    <div class="dashboard-nav">
+        <div class="nav-left">
+            <img src="/static/images/home-logo.png" alt="home">
+            <span>Dashboard</span>
+        </div>
+    </div>
+
+    <div class="page-tabs">
+        <a href="/admin-dashboard">Home</a>
+        <a href="/admin-students">Students</a>
+        <a href="/admin-companies">Companies</a>
+        <a href="/admin-placement-drives">Placement Drive</a>
+        <a href="/admin-applications">Applications</a>
+    </div>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <h2>Company Details</h2>
+        </div>
+    </nav>
+
+    <div class="information">
+        <div class="profile-logo">
+
+            <img src="https://ui-avatars.com/api/?name={{ company.name }} &amp;background=4e6fbf&amp;color=ffffff"
+                alt="Avatar" class="symbol rounded-circle symbol-logo" />
+            <div class="actions">
+                <a href="/admin-deactivated-companies/{{ company.id }}" class="btn btn-danger">Deactivate</a>
+            </div>
+        </div>
+        <div class="profile-info">
+            <p>Name :- {{ company.name }}</p>
+            <p>Email :- {{ company.email }}</p>
+            <p>HR Contact :- {{ company.hr_contact }}</p>
+            <p>Field :- {{ company.field }}</p>
+            <p>website link :- <a href="{{ company.website_link }}" target="_blank">{{ company.website_link }}</a></p>
+            {% if company.status == 'verified' %}
+            <span>Status :- <span class="badge rounded-pill text-bg-success">{{ company.status }}</span></p>
+            {% else %}
+            <p>Status :- <span class="badge rounded-pill text-bg-danger">{{ company.status }}</span></p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="student-history">
+        <h2>Placement Drive history</h2>
+        <div class="history-table">
+            {% if placement_drives %}
+            {% for drive in placement_drives %}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Drive id</th>
+                        <th scope="col">drive name</th>
+                        <th scope="col">Mode</th>
+                        <th scope="col">Due date</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">{{ drive.id }}</th>
+                        <td>{{ drive.name }}</td>
+                        <td>{{ drive.mode }}</td>
+                        <td>{{ drive.deadline }}</td>
+                        <td><span class="badge rounded-pill text-bg-info">{{ drive.status }}</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            {% endfor %}
+            {% else %}
+            <p class="text-center text-muted">No applications found for this company.</p>
+            {% endif %}
+        </div>
+
+    </div>
+</body>
+
+</html>
