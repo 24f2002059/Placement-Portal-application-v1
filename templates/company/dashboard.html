@@ -1,17 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>dashboard</title>
+    <title>Company Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/company.css') }}">
 </head>
+
 <body>
-    {% if company.status == 'verified' %}
-        <h1>Welcome to the Company Dashboard, Company ID: {{ company.id }}</h1>
-    {% elif company.status == 'deactivated' %}
-        <h1>Your company has been deactivated.</h1>
-    {% else %}
-        <h1>Your company is pending verification. Please wait for admin approval.</h1>
-    {% endif %}
+    <div class="dashboard-nav">
+        <div class="nav-left">
+            <img src="https://ui-avatars.com/api/?name=Admin&background=f59e0b&color=ffffff&size=35" alt="home">
+            <span>Dashboard</span>
+        </div>
+    </div>
+
+    <div class="page-tabs">
+        <a href="/company-dashboard/{{ company.id }}">Dashboard</a>
+        <a href="/company-applications/{{ company.id }}">Applications</a>
+        <a href="/company-placement-drive/{{ company.id }}">Placement Drive</a>
+    </div>
+
+    <div class="dashboard-data">
+        <div class="box">
+            <h3>Total Applications</h3>
+            <p>{{ applications|length }}</p>
+        </div>
+        <div class="box">
+            <h3>Total Created Drive</h3>
+            <p>{{ placement_drives|length }}</p>
+        </div>
+
+    </div>
+
+    <div class="data">
+        <div class="recent-applications">
+            <h3>Recent Applications</h3>
+            {% if recent_applications %}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Drive ID</th>
+                        <th scope="col">drive title</th>
+                        <th scope="col">student name</th>
+                        <th scope="col">Application date</th>
+                        <th scope="col">details</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for app in applications %}
+                    <tr>
+                        <th scope="row">{{ app.id }}</th>
+                        <td>{{ app.drive_id }}</td>
+                        <td>{{ app.placementdrive.job_title }}</td>
+                        <td>{{ app.student.name }}</td>
+                        <td>{{ app.application_date.strftime('%d-%m-%Y') }}</td>
+                        <td><a href="/applicant-details/{{ app.id }}" class="btn btn-primary btn-sm">View Details</a></td>
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-center text-muted">No recent applications in the last 7 days.</p>
+            {% endif %}
+
+        </div>
+
+
+    </div>
 </body>
+
 </html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/company.css') }}">
+</head>
+
+<body>
+    <div class="dashboard-nav">
+        <div class="nav-left">
+            <img src="https://ui-avatars.com/api/?name=Admin&background=f59e0b&color=ffffff&size=35" alt="home">
+            <span>Dashboard</span>
+        </div>
+    </div>
+
+    <div class="page-tabs">
+        <a href="/company-dashboard/{{ company.id }}" class="active">Dashboard</a>
+        <a href="/company-applications/{{ company.id }}">Applications</a>
+        <a href="/company-placement-drive/{{ company.id }}">Placement Drive</a>
+    </div>
+
+
+
+    <div class="placement-drive-list">
+        <div class="add">
+            <a href="/add-drive/{{ company.id }}" class="btn btn-primary"> + Add New Drive</a>
+        </div>
+        <div class="active-table">
+            <nav class="navbar bg-body-tertiary">
+                <div class="container-fluid">
+                    <h2>Active Placement Drive</h2>
+                </div>
+            </nav>
+            {% if verified_drives %}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>job title</th>
+                        <th>mode</th>
+                        <th>Deadline</th>
+                        <th>package</th>
+                        <th>status</th>
+                        <th>Actions</th>
+                        <th>Close</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for drive in verified_drives %}
+                    <tr>
+                        <td>{{ drive.id }}</td>
+                        <td>{{ drive.job_title }}</td>
+                        <td>{{ drive.mode }}</td>
+                        <td>{{ drive.deadline }}</td>
+                        <td>{{ drive.package }}</td>
+                        <td>{{ drive.status }}</td>
+                        <td><a href="/drive-applications/{{ drive.id }}" class="btn btn-info">View applications</a>
+                        <a href="/shortlist/{{ drive.id }}" class="btn btn-warning">Shortlist</a>
+                        <a href="/selected-applicants/{{ drive.id }}" class="btn btn-success">Selected</a></td>
+                        <td><a href="/close-drive/{{ drive.id }}" class="btn btn-danger">Close Drive</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="no-data">
+                <p>No active placement drives found.</p>
+            </div>
+            {% endif %}
+        </div>
+        <div class="active-table">
+            <nav class="navbar bg-body-tertiary">
+                <div class="container-fluid">
+                    <h2>Unverified Placement Drive</h2>
+                </div>
+            </nav>
+            {% if unverified_drives %}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>job title</th>
+                        <th>mode</th>
+                        <th>Deadline</th>
+                        <th>package</th>
+                        <th>status</th>
+                        <th>Actions</th>
+                        <th>Close</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for drive in unverified_drives %}
+                    <tr>
+                        <td>{{ drive.id }}</td>
+                        <td>{{ drive.job_title }}</td>
+                        <td>{{ drive.mode }}</td>
+                        <td>{{ drive.deadline }}</td>
+                        <td>{{ drive.package }}</td>
+                        <td>{{ drive.status }}</td>
+                        <td><a href="/drive-applications/{{ drive.id }}" class="btn btn-info">View applications</a>
+                        <a href="/shortlist/{{ drive.id }}" class="btn btn-warning">Shortlist</a>
+                        <a href="/selected-applicants/{{ drive.id }}" class="btn btn-success">Selected</a></td>
+                        <td><a href="/close-drive/{{ drive.id }}" class="btn btn-danger">Close Drive</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="no-data">
+                <p>No unverified placement drives found.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="closed-table">
+            <nav class="navbar bg-body-tertiary">
+                <div class="container-fluid">
+                    <h2>Closed Placement Drive</h2>
+                </div>
+            </nav>
+            {% if closed_drives %}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>job title</th>
+                        <th>mode</th>
+                        <th>Deadline</th>
+                        <th>package</th>
+                        <th>status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for drive in closed_drives %}
+                    <tr>
+                        <td>{{ drive.id }}</td>
+                        <td>{{ drive.job_title }}</td>
+                        <td>{{ drive.mode }}</td>
+                        <td>{{ drive.deadline }}</td>
+                        <td>{{ drive.package }}</td>
+                        <td>{{ drive.status }}</td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+            {% else %}
+            <div class="no-data">
+                <p>No closed placement drives found.</p>
+            </div>
+            {% endif %}
+        </div>
+
+
+    </div>
+</body>
+
+</html>

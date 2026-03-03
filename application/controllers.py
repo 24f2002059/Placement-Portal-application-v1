@@ -2,6 +2,7 @@ from .model import *
 from flask import current_app as app
 from flask import Flask,render_template ,request , redirect , url_for
 from sqlalchemy import or_
+from datetime import datetime, timedelta
 
 @app.route('/')
 def home():
@@ -216,5 +217,101 @@ def company_login():
 @app.route('/company-dashboard/<int:company_id>')
 def company_dashboard(company_id):
     company = db.session.get(Company, company_id)
-    return render_template("/company/dashboard.html", company=company)
+    placement_drives = PlacementDrive.query.filter_by(company_id=company_id).all()
+    applications = []
+    for drive in placement_drives:
+        application = Applications.query.filter_by(drive_id=drive.id).all()
+        applications.extend(application)
+    return render_template("/company/dashboard.html", company=company, placement_drives= placement_drives, applications=applications)
+
+@app.route('/company-placement-drive/<int:company_id>' , methods = ['GET'  , 'POST'])
+def company_placement_drive(company_id):
+    company = db.session.get(Company, company_id)
+    verified_drives = PlacementDrive.query.filter_by(company_id=company_id, status='verified').all()
+    unverified_drives = PlacementDrive.query.filter_by(company_id=company_id, status='unverified').all()
+    closed_drives = PlacementDrive.query.filter_by(company_id=company_id, status='closed').all()
+    return render_template("/company/placement-drive.html", company=company, verified_drives=verified_drives, unverified_drives=unverified_drives, closed_drives=closed_drives)
+
+@app.route('/close-drive/<int:drive_id>')
+def close_drive(drive_id):
+    drive = PlacementDrive.query.get(drive_id)
+    drive.status = 'closed'
+    db.session.commit()
+    return redirect(f"/company-placement-drive/{drive.company_id}")
+
+@app.route('/add-drive/<int:company_id>' , methods = ['GET'  , 'POST'])
+def add_drive(company_id):
+    company = db.session.get(Company, company_id)
+    if request.method == 'POST':
+        job_title = request.form['job_title']
+        mode = request.form['mode']
+        deadline_str = request.form['deadline']
+        package = request.form['package']
+        description = request.form['description']
+        eligibility_criteria = request.form['eligibility_criteria']
+        deadline = datetime.strptime(deadline_str, '%Y-%m-%d')
+        new_drive = PlacementDrive(company_id=company_id, job_title=job_title, mode=mode, deadline=deadline, package=package , description=description, eligibility=eligibility_criteria, status='unverified')
+        db.session.add(new_drive)
+        db.session.commit()
+        return redirect(f"/company-placement-drive/{company_id}")
+    return render_template("/company/add-placement-drive.html", company=company, company_id=company_id)
+
+@app.route('/company-applications/<int:company_id>')
+def company_applications(company_id):
+    company = db.session.get(Company, company_id)
+    placement_drives = PlacementDrive.query.filter_by(company_id=company_id).all()
+    applications = []
+    for drive in placement_drives:
+        application = Applications.query.filter_by(drive_id=drive.id).all()
+        applications.extend(application)
+    return render_template("/company/applications.html", company=company, applications=applications)
+
+@app.route('/shortlist/<int:drive_id>')
+def shortlist(drive_id):
+    drive = PlacementDrive.query.get(drive_id)
+    company = Company.query.get(drive.company_id)
+    applications = Applications.query.filter_by(drive_id=drive_id, status='shortlisted').all()
+    return render_template("/company/shortlist.html", company=company, applications=applications)
+
+@app.route('/selected-applicants/<int:drive_id>')
+def selected_applicants(drive_id):
+    drive = PlacementDrive.query.get(drive_id)
+    company = Company.query.get(drive.company_id)
+    applications = Applications.query.filter_by(drive_id=drive_id, status='selected').all()
+    return render_template("/company/selected-applicants.html", company=company, applications=applications)
+
+
+@app.route('/drive-applications/<int:drive_id>')
+def drive_applications(drive_id):
+    drive = PlacementDrive.query.get(drive_id)
+    company = Company.query.get(drive.company_id)
+    applications = Applications.query.filter_by(drive_id=drive_id).all()
+    return render_template("/company/applications.html", company=company, applications=applications)
+
+@app.route('/applicant-details/<int:application_id>')
+def applicant_details(application_id):
+    application = Applications.query.get(application_id)
+    return render_template("/company/applicant-details.html", application=application)
+
+@app.route('/reject-applicant/<int:application_id>')
+def reject_applicant(application_id):
+    application = Applications.query.get(application_id)
+    application.status = 'rejected'
+    db.session.commit()
+    return redirect(f"/applicant-details/{application_id}")
+
+@app.route('/shortlist-applicant/<int:application_id>')
+def shortlist_applicant(application_id):
+    application = Applications.query.get(application_id)
+    application.status = 'shortlisted'
+    db.session.commit()
+    return redirect(f"/applicant-details/{application_id}")
+
+@app.route('/accept-applicant/<int:application_id>')
+def accept_applicant(application_id):
+    application = Applications.query.get(application_id)
+    application.status = 'selected'
+    db.session.commit()
+    return redirect(f"/applicant-details/{application_id}")
     
+
