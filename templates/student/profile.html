@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile-page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/student.css') }}">
+</head>
+
+<body>
+    <div class="dashboard-nav">
+        <div class="nav-left">
+            <img src="/static/images/home-logo.png" alt="home">
+            <span>Dashboard</span>
+        </div>
+    </div>
+
+    <div class="page-tabs">
+        <a href="/student-dashboard/{{student_id}}">Home</a>
+        <a href="/student-history/{{student_id}}">History</a>
+        <a href="/student-profile/{{student_id}}">Profile</a>
+    </div>
+    <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+            <h2>Profile information</h2>
+        </div>
+    </nav>
+
+    <div class="information">
+        <div class="profile-logo">
+            <img src="https://ui-avatars.com/api/?name={{ student.name }}&background=4e6fbf&color=ffffff" alt="Avatar"
+                class="symbol rounded-circle symbol-logo" />
+        </div>
+        <form class="profile-info" method="post" action="/student-profile/{{ student.id }}"
+            enctype="multipart/form-data">
+
+            <div class="mb-3">
+                <label class="form-label text-muted">Name</label>
+                <input type="text" class="form-control" value="{{ student.name }}" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label text-muted">Email</label>
+                <input type="email" class="form-control" value="{{ student.user.email }}" readonly>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Phone</label>
+                <input type="tel" class="form-control" name="phone" value="{{ student.phone }}">
+            </div>
+
+            <div class="mb-3">
+                <label for="academic_level" class="form-label">Academic Level</label>
+                <select class="form-control" id="academic_level" name="academic_level">
+
+                    <option value="foundation" {% if student.academic_level=="foundation" %}selected{% endif %}>
+                        Foundation
+                    </option>
+
+                    <option value="Diploma" {% if student.academic_level=="Diploma" %}selected{% endif %}>
+                        Diploma
+                    </option>
+
+                    <option value="Bsc" {% if student.academic_level=="Bsc" %}selected{% endif %}>
+                        BSc
+                    </option>
+
+                    <option value="Degree" {% if student.academic_level=="Degree" %}selected{% endif %}>
+                        Degree
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">GitHub Link</label>
+                <input type="url" class="form-control" name="github_link" value="{{ student.github_link }}">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Resume Update</label>
+                <input type="file" class="form-control" name="resume" accept=".pdf,.doc,.docx">
+            </div>
+
+            <div class="actions">
+                <a href="/student-dashboard/{{student_id}}" class="btn btn-secondary">Cancel</a>
+                <input type="submit" class="btn btn-primary" value="Update">
+            </div>
+
+        </form>
+    </div>
+</body>
+
+</html>

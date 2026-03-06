@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drive Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/student.css') }}">
+</head>
+
+<body>
+    <div class="dashboard-nav">
+        <div class="nav-left">
+            <img src="/static/images/home-logo.png" alt="home">
+            <span>Dashboard</span>
+        </div>
+    </div>
+
+    <div class="page-tabs">
+        <a href="/student-dashboard/{{ student_id }}">Home</a>
+        <a href="/student-history/{{ student_id }}">History</a>
+        <a href="/student-profile/{{ student_id }}">Profile</a>
+    </div>
+
+    <div class="main-box">
+        <div class="drive-deatils">
+            <h2 class="text-center">Drive Details</h2>
+
+            {% if drive.status == 'closed' %}
+            <h3><span class="badge bg-danger">{{ drive.status }}</span></h3>
+            {% else %}
+            <h3><span class="badge bg-success">{{ drive.status }}</span></h3>
+            {% endif %}
+            <div class="data">
+                <span>Job Title : </span>
+                <span>{{drive.job_title}}</span>
+            </div>
+            <div class="data">
+                <span>Company : </span>
+                <span>{{drive.company.name}}</span>
+            </div>
+            <div class="data">
+                <span>Package : </span>
+                <span>{{drive.package}}</span>
+            </div>
+            <div class="data">
+                <span>Mode : </span>
+                <span>{{drive.mode}}</span>
+            </div>
+            <div class="data">
+                <span>eligibility : </span>
+                <span>{{drive.eligibility}}</span>
+            </div>
+            <div class="data">
+                <span>description : </span>
+                <span>{{drive.description}}</span>
+            </div>
+            <div class="data">
+                <span>Deadline : </span>
+                <span>{{drive.deadline}}</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

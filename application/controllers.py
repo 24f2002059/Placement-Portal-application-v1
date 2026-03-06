@@ -1,6 +1,6 @@
 from .model import *
 from flask import current_app as app
-from flask import Flask,render_template ,request , redirect , url_for
+from flask import Flask ,render_template ,request , redirect , flash
 from sqlalchemy import or_
 from datetime import datetime, timedelta
 
@@ -174,9 +174,80 @@ def student_login():
             return render_template("student-login.html", error="Invalid credentials")
     return render_template("student-login.html")
 
+
 @app.route('/student-dashboard/<int:student_id>')
 def student_dashboard(student_id):
-    return render_template("/student/dashboard.html", student_id=student_id)
+
+    placement_drives = PlacementDrive.query.filter(
+        or_(PlacementDrive.status == 'verified', PlacementDrive.status == 'closed')
+    ).all()
+
+    selected_applications = Applications.query.filter_by(
+        student_id=student_id, status='selected'
+    ).all()
+
+    applied_applications = Applications.query.filter(
+        Applications.student_id == student_id,
+        or_(
+            Applications.status == 'applied',
+            Applications.status == 'rejected',
+            Applications.status == 'shortlisted'
+        )
+    ).all()
+    return render_template(
+        "/student/dashboard.html",
+        student_id=student_id,
+        placement_drives=placement_drives,
+        selected_applications=selected_applications,
+        applied_applications=applied_applications
+    )
+
+@app.route('/student-drive-details/<int:student_id>/<int:drive_id>')
+def student_drive_details(student_id, drive_id):
+    drive = PlacementDrive.query.get(drive_id)
+    return render_template("/student/drive-details.html", drive=drive , student_id=student_id)
+
+@app.route('/student-apply-placement-drive/<int:student_id>/<int:drive_id>')
+def student_apply_placement_drive(student_id, drive_id):
+    drive = PlacementDrive.query.get(drive_id)
+    existing_application = Applications.query.filter_by(student_id=student_id, drive_id=drive_id).first()
+    if existing_application:
+        flash("You have already applied for this drive.")
+        return redirect(f"/student-dashboard/{student_id}")
+
+    new_application = Applications(student_id=student_id, drive_id=drive_id, status='applied',
+                                   application_date=datetime.now())
+    db.session.add(new_application)
+    db.session.commit()
+    flash("Application submitted successfully.")
+    return redirect(f"/student-dashboard/{student_id}")
+
+
+@app.route('/student-profile/<int:student_id>', methods=['GET', 'POST'])
+def student_profile(student_id):
+
+    student = Student.query.get(student_id)
+
+    if request.method == 'POST':
+
+        student.phone = request.form.get('phone')
+        student.academic_level = request.form.get('academic_level')
+        student.github_link = request.form.get('github_link')
+
+        resume = request.files.get('resume')
+
+        if resume and resume.filename != '':
+            student.resume = resume.read()
+
+        db.session.commit()
+
+    return render_template("/student/profile.html", student=student, student_id=student_id)
+
+@app.route('/student-history/<int:student_id>')
+def student_history(student_id):
+    applications = Applications.query.filter_by(student_id=student_id).all()
+    return render_template("/student/history.html", applications=applications, student_id=student_id)
+
 
 # ---- company backend ----
 
