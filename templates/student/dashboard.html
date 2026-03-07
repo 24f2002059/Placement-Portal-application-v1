@@ -30,9 +30,9 @@
                     <img src="/static/images/company.png" class="logos me-2" alt="">
                     <h2 class="mb-0">Placement Drives</h2>
                 </div>
-                <form class="d-flex" role="search" action="/search-companies" method="get">
-                    <input class="form-control me-2" type="search" placeholder="Search by name or field"
-                        aria-label="Search" name="search">
+                <form class="d-flex" role="search" action="/search-drive/{{ student_id }}" method="get">
+                    <input class="form-control me-2" type="search" placeholder="Search by job title or company"
+                        aria-label="Search" name="search_drive">
                     <input class="btn btn-outline-success" type="submit" value="Search">
                 </form>
 
@@ -70,7 +70,12 @@
             {% endif %}
         </div>
         <div class="application-status">
-            <h3>Applied Applications</h3>
+            <div class="container-fluid d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <img src="/static/images/applications.png" class="logos me-2" alt="">
+                    <h2 class="mb-0">Applied Applications</h2>
+                </div>
+            </div>
             {% if applied_applications %}
             <table class="table table-hover">
                 <thead>
@@ -110,7 +115,12 @@
             {% endif %}
         </div>
         <div class="application-status">
-            <h3>Selected Applications</h3>
+            <div class="container-fluid d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <img src="/static/images/applications.png" class="logos me-2" alt="">
+                    <h2 class="mb-0">Selected Applications</h2>
+                </div>
+            </div>
             {% if selected_applications %}
             <table class="table table-hover">
                 <thead>

@@ -41,7 +41,7 @@
         </div>
         <div class="profile-info">
             <p>Name :- {{ company.name }}</p>
-            <p>Email :- {{ company.email }}</p>
+            <p>Email :- {{ company.user.email }}</p>
             <p>HR Contact :- {{ company.hr_contact }}</p>
             <p>Field :- {{ company.field }}</p>
             <p>website link :- <a href="{{ company.website_link }}" target="_blank">{{ company.website_link }}</a></p>
@@ -70,7 +70,7 @@
                 <tbody>
                     <tr>
                         <th scope="row">{{ drive.id }}</th>
-                        <td>{{ drive.name }}</td>
+                        <td>{{ drive.job_title }}</td>
                         <td>{{ drive.mode }}</td>
                         <td>{{ drive.deadline }}</td>
                         <td><span class="badge rounded-pill text-bg-info">{{ drive.status }}</span></td>

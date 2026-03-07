@@ -31,11 +31,6 @@
                     <img src="/static/images/applications.png" class="logos" alt="">
                     <h2 class="mb-0">Applications</h2>
                 </div>
-                <form class="d-flex" role="search" action="/admin-applications-search" method="get">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                        name="search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
 
             </div>
         </nav>
@@ -59,7 +54,15 @@
                         <td>{{ application.placementdrive.job_title }}</td>
                         <td>{{ application.placementdrive.company.name }}</td>
                         <td>{{ application.application_date }}</td>
-                        <td>{{ application.status }}</td>
+                        {% if application.status == 'applied' %}
+                        <td><div class="badge bg-primary">{{ application.status }}</div></td>
+                        {% elif application.status == 'shortlisted' %}
+                        <td><div class="badge bg-warning">{{ application.status }}</div></td>
+                        {% elif application.status == 'rejected' %}
+                        <td><div class="badge bg-danger">{{ application.status }}</div></td>
+                        {% elif application.status == 'selected' %}
+                        <td><div class="badge bg-success">{{ application.status }}</div></td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 </tbody>

@@ -64,7 +64,7 @@
                         <th scope="row">{{ drive.id }}</th>
                         <td>{{ drive.job_title }}</td>
                         <td>{{ drive.company.name }}</td>
-                        <td><a href="#" class="btn btn-primary btn-sm">View</a></td>
+                        <td><a href="/admin-placement-drive-details/{{ drive.id }}" class="btn btn-primary btn-sm">View</a></td>
                         <td>
                             <a href="/admin-approve-placement-drive/{{ drive.id }}" class="btn btn-success btn-sm">Approve</a>
                             <a href="/admin-reject-placement-drive/{{ drive.id }}" class="btn btn-danger btn-sm">Reject</a>

@@ -6,21 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="company.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/company.css') }}">
 </head>
 
 <body>
     <div class="dashboard-nav">
         <div class="nav-left">
-            <img src="https://ui-avatars.com/api/?name=Admin&background=f59e0b&color=ffffff&size=35" alt="home">
-            <span>Dashboard</span>
+            <img src="/static/images/home-logo.png" alt="home">
+            <span>Company Dashboard</span>
         </div>
     </div>
 
     <div class="page-tabs">
-        <a href="/company-dashboard/{{ application.company.id }}">Dashboard</a>
-        <a href="/company-applications/{{ application.company.id }}">Applications</a>
-        <a href="/company-placement-drive/{{ application.company.id }}">Placement Drive</a>
+        <a href="/company-dashboard/{{ application.placementdrive.company.id }}">Dashboard</a>
+        <a href="/company-applications/{{ application.placementdrive.company.id }}">Applications</a>
+        <a href="/company-placement-drive/{{ application.placementdrive.company.id }}">Placement Drive</a>
     </div>
     <nav class="navbar bg-body-tertiary">
         <div class="container-fluid">
@@ -38,14 +38,21 @@
             <p>Email :- {{ application.student.user.email }}</p>
             <p>Phone :- {{ application.student.phone }}</p>
             <p>Academic level :- {{ application.student.academic_level }}</p>
-            <p>github link :- <a href="{{ application.student.github_link }}" target="_blank">{{ application.student.github_link }}</a></p>
-            {% if application.status == 'Applied' %}
+            <p>github link :- <a href="{{ application.student.github_link }}" target="_blank">{{
+                    application.student.github_link }}</a></p>
+            {% if application.status == 'applied' %}
             <a href="/reject-applicant/{{ application.id }}" class="btn btn-danger">reject</a>
             <a href="/shortlist-applicant/{{ application.id }}" class="btn btn-warning">shortlist</a>
-            {% elif application.status == 'Shortlisted' %}
+            {% elif application.status == 'shortlisted' %}
             <a href="/reject-applicant/{{ application.id }}" class="btn btn-danger">reject</a>
             <a href="/accept-applicant/{{ application.id }}" class="btn btn-success">accept</a>
             {% endif %}
+            <p>
+                Resume :-
+                <a href="{{ url_for('get_resume', student_id=application.student.id) }}" target="_blank">
+                    View Resume
+                </a>
+            </p>
         </div>
     </div>
 </body>

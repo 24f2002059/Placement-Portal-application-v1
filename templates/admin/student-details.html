@@ -51,7 +51,6 @@
         <h2>Application history</h2>
         <div class="history-table">
             {% if applications %}
-            {% for application in applications %}
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -65,16 +64,18 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for application in applications %}
                     <tr>
                         <th scope="row">{{ application.id }}</th>
-                        <td>{{ application.placementdrive.name }}</td>
-                        <td>{{ application.company.name }}</td>
+                        <td>{{ application.placementdrive.job_title }}</td>
+                        <td>{{ application.placementdrive.company.name }}</td>
                         <td>{{ application.application_date }}</td>
-                        <td class="badge rounded-pill text-bg-info">{{ application.status }}</td>
+                        <td> <div class="badge bg-info">{{ application.status }}</div></td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
-            {% endfor %}
+        
             {% else %}
             <p class="text-center text-muted">No applications found for this student.</p>
             {% endif %}

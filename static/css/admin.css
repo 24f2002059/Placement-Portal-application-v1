@@ -302,5 +302,34 @@ body {
     min-height: 200px;
     padding: 20px;
 }
+/* --- drive details page css ---  */
+.main-box{
+    width: 100%;
+    min-height: 570px;
+    background-color: var(--card-bg);
+    box-shadow: var(--shadow-soft);
+    padding: 20px;
+}
+.drive-deatils{
+    width: 70%;
+    min-height: 470px;
+    background-color: var(--card-bg);
+    box-shadow: var(--shadow-soft);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin: auto;
+    padding: 20px 80px ;
+}
+.data{
+    display: flex;
+    gap: 15px;
+    font-size: x-large;
+}
+.logos{
+    width: 50px;
+    height: 50px;
+}
 
 

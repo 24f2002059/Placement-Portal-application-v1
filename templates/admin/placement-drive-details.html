@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Drive Details</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/student.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
 </head>
 
 <body>
@@ -18,9 +18,11 @@
     </div>
 
     <div class="page-tabs">
-        <a href="/student-dashboard/{{ student_id }}">Home</a>
-        <a href="/student-history/{{ student_id }}">History</a>
-        <a href="/student-profile/{{ student_id }}">Profile</a>
+        <a href="/admin-dashboard">Home</a>
+        <a href="/admin-students">Students</a>
+        <a href="/admin-companies">Companies</a>
+        <a href="/admin-placement-drives" class="active">Placement Drive</a>
+        <a href="/admin-applications">Applications</a>
     </div>
 
     <div class="main-box">
@@ -29,13 +31,10 @@
 
             {% if drive.status == 'closed' %}
             <h3><span class="badge bg-danger">{{ drive.status }}</span></h3>
-            {% else %}
+            {% elif drive.status == 'verified' %}
             <h3><span class="badge bg-success">{{ drive.status }}</span></h3>
-            {% endif %}
-            {% if message == "already_applied" %}
-            <div class="alert alert-warning">You have already applied for this drive.</div>
-            {% elif message == "applied_success" %}
-            <div class="alert alert-success">Application submitted successfully.</div>
+            {% else %}
+            <h3><span class="badge bg-warning">{{ drive.status }}</span></h3>
             {% endif %}
             <div class="data">
                 <span>Job Title : </span>

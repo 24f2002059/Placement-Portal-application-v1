@@ -62,6 +62,10 @@ body {
             var(--bg-gradient-end));
     min-height: 100vh;
 }
+.logos {
+    width: 50px;
+    height: 50px;
+}
 
 .dashboard-nav {
     background-color: var(--nav-bg);

@@ -12,8 +12,8 @@
 <body>
     <div class="dashboard-nav">
         <div class="nav-left">
-            <img src="https://ui-avatars.com/api/?name=Admin&background=f59e0b&color=ffffff&size=35" alt="home">
-            <span>Dashboard</span>
+            <img src="/static/images/home-logo.png" alt="home">
+            <span>Company Dashboard</span>
         </div>
     </div>
 
@@ -23,7 +23,8 @@
         <a href="/company-placement-drive/{{ company.id }}">Placement Drive</a>
     </div>
     <nav class="navbar bg-body-tertiary">
-        <div class="container-fluid">
+        <div class="nav-left">
+            <img  class= logos src="/static/images/applications.png" alt="home">
             <h2>Applications</h2>
         </div>
     </nav>
@@ -40,6 +41,7 @@
                         <th>job title</th>
                         <th>applicant name</th>
                         <th>application date</th>
+                        <th>status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -51,7 +53,16 @@
                         <td>{{ application.placementdrive.job_title }}</td>
                         <td>{{ application.student.name }}</td>
                         <td>{{ application.application_date }}</td>
-                        <td><a href="/applicant-details/{{ application.id }}" class="btn btn-primary">View Details</a></td>
+                        {% if application.status == 'applied' %}
+                        <td> <div class="badge text-bg-primary">Applied</div></td>
+                        {% elif application.status == 'shortlisted' %}
+                        <td> <div class="badge text-bg-warning">Shortlisted</div></td>
+                        {% elif application.status == 'selected' %}
+                        <td> <div class="badge text-bg-success">Selected</div></td>
+                        {% elif application.status == 'rejected' %}
+                        <td> <div class="badge text-bg-danger">Rejected</div></td>
+                        {% endif %}
+                        <td><a href="/applicant-details/{{ application.id }}" class="btn btn-info">View Details</a></td>
                     </tr>
                     {% endfor %}
 

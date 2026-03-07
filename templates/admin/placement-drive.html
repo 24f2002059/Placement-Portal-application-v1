@@ -31,12 +31,6 @@
                     <img src="/static/images/placement.png" class="logos me-2" alt="">
                     <h2 class="mb-0">Placement Drives</h2>
                 </div>
-                <form class="d-flex" role="search" action="/admin-placements-search" method="get">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
-                        name="search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-
             </div>
         </nav>
         <div class="applications-table">
@@ -58,7 +52,13 @@
                         <td>{{ drive.job_title }}</td>
                         <td>{{ drive.company.name }}</td>
                         <td>{{ drive.deadline }}</td>
-                        <td>{{ drive.status }}</td>
+                        {% if drive.status == 'unverified' %}
+                        <td><div class="badge bg-secondary">{{ drive.status }}</div></td>
+                        {% elif drive.status == 'verified' %}
+                        <td><div class="badge bg-success">{{ drive.status }}</div></td>
+                        {% elif drive.status == 'closed' %}
+                        <td><div class="badge bg-danger">{{ drive.status }}</div></td>
+                        {% endif %}
                         <td><a href="/admin-placement-drive-details/{{ drive.id }}" class="btn btn-sm btn-outline-primary">View Details</a>
                             <a href="/admin-delete-placement-drive/{{ drive.id }}" class="btn btn-sm btn-outline-danger">Delete</a>
                         </td>

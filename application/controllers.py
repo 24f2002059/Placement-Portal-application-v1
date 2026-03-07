@@ -1,5 +1,5 @@
 from .model import *
-from flask import current_app as app
+from flask import Response, current_app as app
 from flask import Flask ,render_template ,request , redirect , flash
 from sqlalchemy import or_
 from datetime import datetime, timedelta
@@ -28,8 +28,9 @@ def admin_dashboard():
     unverified_company = Company.query.filter_by(status='unverified').all()
     student = Student.query.all()
     placement_drives = PlacementDrive.query.all()
+    unverified_drives = PlacementDrive.query.filter_by(status='unverified').all()
     applications = Applications.query.all()
-    return render_template("/admin/dashboard.html", company=company, student=student, unverified_company=unverified_company, placement_drives=placement_drives, applications=applications)
+    return render_template("/admin/dashboard.html", company=company, student=student, unverified_company=unverified_company, placement_drives=placement_drives, applications=applications, unverified_drives=unverified_drives)
 
 
 @app.route('/company-verified/<int:company_id>')
@@ -71,7 +72,6 @@ def search_students():
     search = request.args.get('search')
 
     if search:
-        # Try to search by ID if search query is a number
         if search.isdigit():
             students = Student.query.filter(
                 or_(
@@ -130,6 +130,36 @@ def search_companies():
 def admin_placement_drives():
     placement_drives = PlacementDrive.query.all()
     return render_template("/admin/placement-drive.html", placement_drives=placement_drives)
+
+
+@app.route('/admin-approve-placement-drive/<int:drive_id>')
+def placement_drive_approval(drive_id):
+    drive = PlacementDrive.query.get(drive_id)
+    if drive:
+        drive.status = 'verified'
+        db.session.commit()
+    return redirect("/admin-dashboard")
+
+@app.route('/admin-reject-placement-drive/<int:drive_id>')
+def placement_drive_rejection(drive_id):
+    drive = PlacementDrive.query.get(drive_id)
+    if drive:
+        drive.status = 'rejected'
+        db.session.commit()
+    return redirect("/admin-dashboard")
+
+@app.route('/admin-placement-drive-details/<int:drive_id>')
+def admin_placement_drive_details(drive_id):
+    drive = PlacementDrive.query.get(drive_id)
+    return render_template("/admin/placement-drive-details.html", drive=drive)
+
+@app.route('/admin-delete-placement-drive/<int:drive_id>')
+def admin_delete_placement_drive(drive_id):
+    drive = PlacementDrive.query.get(drive_id)
+    if drive:
+        db.session.delete(drive)
+        db.session.commit()
+    return redirect("/admin-placement-drives")
 
 @app.route('/admin-applications')
 def admin_applications():
@@ -211,16 +241,55 @@ def student_drive_details(student_id, drive_id):
 def student_apply_placement_drive(student_id, drive_id):
     drive = PlacementDrive.query.get(drive_id)
     existing_application = Applications.query.filter_by(student_id=student_id, drive_id=drive_id).first()
-    if existing_application:
-        flash("You have already applied for this drive.")
-        return redirect(f"/student-dashboard/{student_id}")
 
-    new_application = Applications(student_id=student_id, drive_id=drive_id, status='applied',
-                                   application_date=datetime.now())
+    if existing_application:
+        return render_template("/student/drive-details.html", drive=drive, student_id=student_id, message="already_applied")
+
+    new_application = Applications(
+        student_id=student_id,
+        drive_id=drive_id,
+        status='applied',
+        application_date=datetime.now()
+    )
+
     db.session.add(new_application)
     db.session.commit()
-    flash("Application submitted successfully.")
-    return redirect(f"/student-dashboard/{student_id}")
+
+    return render_template("/student/drive-details.html", drive=drive, student_id=student_id, message="applied_success")
+
+@app.route('/search-drive/<int:student_id>', methods=['GET'])
+def search_drive(student_id):
+    search = request.args.get('search_drive')
+    base_query = PlacementDrive.query.filter(
+        or_(PlacementDrive.status == 'verified', PlacementDrive.status == 'closed')
+    )
+    if search:
+        placement_drives = base_query.filter(
+            or_(
+                PlacementDrive.job_title.ilike(f"%{search}%"),
+                PlacementDrive.company.has(Company.name.ilike(f"%{search}%"))
+            )
+        ).all()
+    else:
+        placement_drives = base_query.all()
+    selected_applications = Applications.query.filter_by(
+        student_id=student_id, status='selected'
+    ).all()
+    applied_applications = Applications.query.filter(
+        Applications.student_id == student_id,
+        or_(
+            Applications.status == 'applied',
+            Applications.status == 'rejected',
+            Applications.status == 'shortlisted'
+        )
+    ).all()
+    return render_template(
+        "/student/dashboard.html",
+        student_id=student_id,
+        placement_drives=placement_drives,
+        selected_applications=selected_applications,
+        applied_applications=applied_applications
+    )
 
 
 @app.route('/student-profile/<int:student_id>', methods=['GET', 'POST'])
@@ -376,13 +445,22 @@ def shortlist_applicant(application_id):
     application = Applications.query.get(application_id)
     application.status = 'shortlisted'
     db.session.commit()
-    return redirect(f"/applicant-details/{application_id}")
+    return redirect(f"/drive-applications/{application.drive_id}")
 
 @app.route('/accept-applicant/<int:application_id>')
 def accept_applicant(application_id):
     application = Applications.query.get(application_id)
     application.status = 'selected'
     db.session.commit()
-    return redirect(f"/applicant-details/{application_id}")
+    return redirect(f"/drive-applications/{application.drive_id}")
+
+
+@app.route("/resume/<int:student_id>")
+def get_resume(student_id):
+    student = Student.query.get(student_id)
+
+    if student and student.resume:
+        return Response(student.resume, mimetype="application/pdf")
+    return "Resume not found", 404
     
 
