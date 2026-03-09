@@ -10,6 +10,7 @@
 </head>
 
 <body>
+    {% if company.status == 'verified' %}
     <div class="dashboard-nav">
         <div class="nav-left">
              <img src="/static/images/home-logo.png" alt="home">
@@ -74,6 +75,19 @@
 
 
     </div>
+    {% elif company.status == 'rejected' %}
+    <div class="alert alert-danger text-center" role="alert">
+        Your company has been rejected.
+    </div>
+    {% elif company.status == 'unverified' %}
+    <div class="alert alert-warning text-center" role="alert">
+        Your company is not verified yet.
+    </div>
+    {% elif company.status == 'deactivated' %}
+    <div class="alert alert-danger text-center" role="alert">
+        Your company is deactivated.
+    </div>
+    {% endif %}
 </body>
 
 </html>

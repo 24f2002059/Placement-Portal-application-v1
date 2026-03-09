@@ -5,7 +5,6 @@
     --card-bg:#FFFFFF;
     --card-shadow:rgba(0,0,0,0.08);
     --border:#DEE2E6;
-    --success:
 }
 *{
     margin: 0;
@@ -17,7 +16,7 @@
 .hero{
     height: 50vh;
     width: 100%;
-    background-image:url(/static/images/hero.png);
+    background-image:url(/static/images/hero.jpeg);
     position: relative;
 }
 .navbar{

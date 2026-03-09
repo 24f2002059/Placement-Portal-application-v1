@@ -36,7 +36,7 @@
             <img src="https://ui-avatars.com/api/?name={{ student.name }} &amp;background=4e6fbf&amp;color=ffffff"
                 alt="Avatar" class="symbol rounded-circle symbol-logo" />
             <div class="actions">
-                <a href="/admin-deactivated-students/{{ student.id }}" class="btn btn-danger">Deactivate</a>
+                <a href="/admin-delete-students/{{ student.id }}" class="btn btn-danger">Delete</a>
             </div>
         </div>
         <div class="profile-info">
@@ -45,6 +45,7 @@
             <p>Phone :- {{ student.phone }}</p>
             <p>Academic level :- {{ student.academic_level }}</p>
             <p>github link :- <a href="{{ student.github_link }}" target="_blank">{{ student.github_link }}</a></p>
+            <p>Resume :- <a href="/resume/{{ student.id }}" target="_blank">View Resume</a></p>
         </div>
     </div>
     <div class="student-history">

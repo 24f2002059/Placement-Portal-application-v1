@@ -23,7 +23,6 @@
 .black-cover {
     height: 100vh;
     background-color: rgba(3, 0, 0, 0.5);
-    /* Semi-transparent black */
     position: absolute;
     width: 100%;
     z-index: 2;
@@ -32,6 +31,8 @@
 .page {
     background-image: url(/static/images/admin-login-banner.jpeg);
     background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
     height: 100vh;
     position: relative;
 }

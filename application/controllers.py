@@ -1,8 +1,8 @@
 from .model import *
 from flask import Response, current_app as app
-from flask import Flask ,render_template ,request , redirect , flash
+from flask import render_template ,request , redirect 
 from sqlalchemy import or_
-from datetime import datetime, timedelta
+from datetime import datetime
 
 @app.route('/')
 def home():
@@ -60,12 +60,13 @@ def admin_student_details(student_id):
     applications = Applications.query.filter_by(student_id=student_id).all()
     return render_template("/admin/student-details.html", student=student, applications=applications)
 
-@app.route('/admin-deactivated-students/<int:student_id>')
-def admin_deactivated_students(student_id):
-    student = Student.query.get(student_id)
-    student.status = 'deactivated'
+@app.route('/admin-delete-students/<int:student_id>')
+def admin_delete_students(student_id):
+    user_id = Student.query.get(student_id).user_id
+    user = User.query.get(user_id)
+    db.session.delete(user)                 
     db.session.commit()
-    return redirect(f"/admin-student-details/{student_id}")
+    return redirect(f"/admin-students")
 
 @app.route('/search-students', methods=['GET'])
 def search_students():

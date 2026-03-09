@@ -40,6 +40,12 @@
             <p>Academic level :- {{ application.student.academic_level }}</p>
             <p>github link :- <a href="{{ application.student.github_link }}" target="_blank">{{
                     application.student.github_link }}</a></p>
+            <p>
+                Resume :-
+                <a href="{{ url_for('get_resume', student_id=application.student.id) }}" target="_blank">
+                    View Resume
+                </a>
+            </p>
             {% if application.status == 'applied' %}
             <a href="/reject-applicant/{{ application.id }}" class="btn btn-danger">reject</a>
             <a href="/shortlist-applicant/{{ application.id }}" class="btn btn-warning">shortlist</a>
@@ -47,12 +53,6 @@
             <a href="/reject-applicant/{{ application.id }}" class="btn btn-danger">reject</a>
             <a href="/accept-applicant/{{ application.id }}" class="btn btn-success">accept</a>
             {% endif %}
-            <p>
-                Resume :-
-                <a href="{{ url_for('get_resume', student_id=application.student.id) }}" target="_blank">
-                    View Resume
-                </a>
-            </p>
         </div>
     </div>
 </body>
