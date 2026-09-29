@@ -59,4 +59,5 @@ class Applications(db.Model):
     application_date =  db.Column(db.Date, nullable=False , default=db.func.current_date())
     status = db.Column(db.String(50), nullable=False, default='Applied')
 
-    
+
+

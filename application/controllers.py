@@ -464,4 +464,3 @@ def get_resume(student_id):
         return Response(student.resume, mimetype="application/pdf")
     return "Resume not found", 404
     
-
